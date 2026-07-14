@@ -1,0 +1,47 @@
+# Environment files
+.env
+
+# Local configuration
+src/main/resources/application.properties
+
+# Maven
+target/
+.mvn/wrapper/maven-wrapper.jar
+
+# Keep target folders inside source if needed
+!**/src/main/**/target/
+!**/src/test/**/target/
+
+# Spring Tool Suite
+HELP.md
+.apt_generated
+.classpath
+.factorypath
+.project
+.settings
+.springBeans
+.sts4-cache
+
+# IntelliJ IDEA
+.idea/
+*.iml
+*.ipr
+*.iws
+
+# VS Code
+.vscode/
+
+# NetBeans
+/nbproject/private/
+/nbbuild/
+/dist/
+/nbdist/
+/.nb-gradle/
+
+# Gradle
+build/
+!**/src/main/**/build/
+!**/src/test/**/build/
+
+# macOS
+.DS_Store
