@@ -21,10 +21,13 @@ Smart Ticket Router is a Spring Boot application that uses OpenAI to automatical
 - Thymeleaf
 - Bootstrap 5
 - OpenAI API
+- ChromaDB (Vector Database)
+- MySQL
 - Jackson
 
 ## Project Structure
 
+```
 client/
 controller/
 enums/
@@ -32,85 +35,72 @@ model/
 prompt/
 service/
 templates/
+```
 
 ## Running the Project
 
-1. Add your OpenAI API key to `application.properties`
+1. Create `application.properties` from `application.properties.example`
+2. Add your OpenAI API key and MySQL password.
+3. Start MySQL and ChromaDB.
+4. Run:
 
-2. Run:
-
+```bash
 mvn spring-boot:run
+```
 
-3. Open:
+5. Open:
 
+```
 http://localhost:8080
+```
 
 ## Sample API
 
-POST /api/route
+**POST** `/api/route`
 
 ```json
 {
-  "message":"I forgot my password."
+  "message": "I forgot my password."
 }
 ```
 
-Example Response
+### Example Response
 
 ```json
 {
-  "category":"AUTHENTICATION",
-  "priority":"MEDIUM",
-  "assignedTeam":"ACCOUNT_SUPPORT",
-  "reason":"Password reset assistance required."
+  "category": "AUTHENTICATION",
+  "priority": "MEDIUM",
+  "assignedTeam": "ACCOUNT_SUPPORT",
+  "reason": "Password reset assistance required."
 }
 ```
-                 User
 
-                  │
+## Architecture
 
-                  ▼
-
-        Thymeleaf Web Page
-
-                  │
-
-                  ▼
-
-       TicketWebController
-
-                  │
-
-                  ▼
-
-      TicketRoutingService
-
-                  │
-
-                  ▼
-
-          PromptBuilder
-
-                  │
-
-                  ▼
-
-           OpenAI Client
-
-                  │
-
-                  ▼
-
-          OpenAI GPT Model
-
-                  │
-
-                  ▼
-
-         JSON Ticket Response
-
-                  │
-
-                  ▼
-
-         Display to the User
+```
+User
+  │
+  ▼
+Thymeleaf Web Page
+  │
+  ▼
+TicketWebController
+  │
+  ▼
+TicketRoutingService
+  │
+  ▼
+PromptBuilder
+  │
+  ▼
+OpenAI Client
+  │
+  ▼
+OpenAI GPT Model
+  │
+  ▼
+JSON Ticket Response
+  │
+  ▼
+Display to the User
+```
