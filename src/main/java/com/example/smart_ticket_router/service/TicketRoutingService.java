@@ -16,11 +16,14 @@ public class TicketRoutingService {
     private final OpenAIClient openAIClient;
     private final TicketRepository ticketRepository;
     private final EmbeddingService embeddingService;
+
+    // Create ObjectMapper directly
     private final ObjectMapper mapper = new ObjectMapper();
 
     public TicketRoutingService(OpenAIClient openAIClient,
                                 TicketRepository ticketRepository,
                                 EmbeddingService embeddingService) {
+
         this.openAIClient = openAIClient;
         this.ticketRepository = ticketRepository;
         this.embeddingService = embeddingService;
@@ -30,17 +33,26 @@ public class TicketRoutingService {
 
         try {
 
-            // Build AI prompt
+            // Build prompt
             String prompt = PromptBuilder.buildPrompt(message);
 
-            // Get AI response
+            // Ask OpenAI
             String json = openAIClient.askOpenAI(prompt);
+
+            // Remove markdown if GPT returns ```json ... ```
+            json = json.replace("```json", "")
+                       .replace("```", "")
+                       .trim();
+
+            System.out.println("========== OPENAI RESPONSE ==========");
+            System.out.println(json);
+            System.out.println("=====================================");
 
             // Convert JSON to Java object
             TicketResponse response =
                     mapper.readValue(json, TicketResponse.class);
 
-            // Create ticket entity
+            // Save ticket
             Ticket ticket = new Ticket();
 
             ticket.setMessage(message);
@@ -50,25 +62,31 @@ public class TicketRoutingService {
             ticket.setReason(response.getReason());
             ticket.setCreatedAt(LocalDateTime.now());
 
-            // Save ticket in MySQL
             Ticket savedTicket = ticketRepository.save(ticket);
 
             // Store embedding in ChromaDB
-            embeddingService.storeTicket(
-                    savedTicket.getId().toString(),
-                    savedTicket.getMessage()
-            );
+            //embeddingService.storeTicket(
+              //      savedTicket.getId().toString(),
+                //    savedTicket.getMessage()
+            //);
+            try {
+    embeddingService.storeTicket(
+            savedTicket.getId().toString(),
+            savedTicket.getMessage()
+    );
+} catch (Exception e) {
+    System.out.println("ChromaDB is not running. Skipping embedding storage.");
+}
 
             return response;
 
         } catch (Exception e) {
 
+            System.err.println("=========== ERROR ===========");
             e.printStackTrace();
+            System.err.println("=============================");
 
-            TicketResponse response = new TicketResponse();
-            response.setReason("Unable to process ticket.");
-
-            return response;
+            throw new RuntimeException("Error while routing ticket", e);
         }
     }
 }

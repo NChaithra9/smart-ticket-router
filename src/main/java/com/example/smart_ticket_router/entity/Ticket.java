@@ -1,8 +1,8 @@
 package com.example.smart_ticket_router.entity;
 
 import com.example.smart_ticket_router.enums.AssignedTeam;
-import com.example.smart_ticket_router.enums.TicketCategory;
 import com.example.smart_ticket_router.enums.Priority;
+import com.example.smart_ticket_router.enums.TicketCategory;
 import jakarta.persistence.*;
 
 import java.time.LocalDateTime;
@@ -30,9 +30,18 @@ public class Ticket {
     @Column(columnDefinition = "TEXT")
     private String reason;
 
+    @ManyToOne
+    @JoinColumn(name = "user_id")
+    private User user;
+
     private LocalDateTime createdAt;
 
     public Ticket() {
+    }
+
+    @PrePersist
+    public void prePersist() {
+        this.createdAt = LocalDateTime.now();
     }
 
     public Long getId() {
@@ -89,5 +98,13 @@ public class Ticket {
 
     public void setCreatedAt(LocalDateTime createdAt) {
         this.createdAt = createdAt;
+    }
+
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
     }
 }
