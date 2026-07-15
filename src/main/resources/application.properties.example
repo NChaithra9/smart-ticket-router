@@ -1,18 +1,52 @@
+##############################################
+# Application Configuration
+##############################################
+
 spring.application.name=smart-ticket-router
+
+##############################################
+# Server Configuration
+##############################################
+
 server.port=8080
 
-spring.thymeleaf.cache=false
+##############################################
+# PostgreSQL Database Configuration
+##############################################
 
-openai.api.key=${OPENAI_API_KEY}
-openai.model=gpt-4.1-mini
-openai.embedding.model=text-embedding-3-small
+spring.datasource.url=jdbc:postgresql://localhost:5432/smart_ticket_router
+spring.datasource.username=postgres
+spring.datasource.password=your_password
+spring.datasource.driver-class-name=org.postgresql.Driver
 
-spring.datasource.url=jdbc:mysql://localhost:3306/smart_ticket_router
-spring.datasource.username=root
-spring.datasource.password=${MYSQL_PASSWORD}
-
-chroma.url=http://localhost:8000
+##############################################
+# JPA / Hibernate Configuration
+##############################################
 
 spring.jpa.hibernate.ddl-auto=update
 spring.jpa.show-sql=true
 spring.jpa.properties.hibernate.format_sql=true
+
+##############################################
+# OpenAI Configuration
+##############################################
+
+openai.api.key=your_openai_api_key
+openai.model=gpt-4.1-mini
+
+##############################################
+# ChromaDB Configuration
+##############################################
+
+chroma.url=http://localhost:8000
+chroma.collection.id=401418ee-1fc9-497f-a25d-2e624865a06e
+
+##############################################
+# Logging Configuration
+##############################################
+
+##############################################
+# Thymeleaf Configuration
+##############################################
+
+spring.thymeleaf.cache=false

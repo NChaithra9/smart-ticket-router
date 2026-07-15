@@ -5,156 +5,246 @@
 
     <meta charset="UTF-8">
 
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1">
+
     <title>Login | Smart Ticket Router</title>
 
-    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- Bootstrap -->
 
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
           rel="stylesheet">
 
-    <style>
+    <!-- Bootstrap Icons -->
 
-        body{
-            background:linear-gradient(135deg,#4F46E5,#2563EB);
-            height:100vh;
-            display:flex;
-            justify-content:center;
-            align-items:center;
-        }
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css"
+          rel="stylesheet">
 
-        .login-card{
-            width:420px;
-            border:none;
-            border-radius:20px;
-            box-shadow:0 15px 40px rgba(0,0,0,.25);
-        }
+    <!-- Google Font -->
 
-        .brand{
-            font-size:34px;
-            font-weight:bold;
-            color:#2563EB;
-        }
+    <link rel="preconnect"
+          href="https://fonts.googleapis.com">
 
-    </style>
+    <link rel="preconnect"
+          href="https://fonts.gstatic.com"
+          crossorigin>
+
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap"
+          rel="stylesheet">
+
+    <!-- Custom CSS -->
+
+    <link rel="stylesheet"
+          th:href="@{/css/style.css}">
 
 </head>
 
 <body>
 
-<div class="card login-card">
+<!-- Navbar -->
 
-    <div class="card-body p-5">
+<div th:replace="fragments/navbar :: navbar"></div>
 
-        <div class="text-center mb-4">
+<div class="container">
 
-            <div class="brand">
+    <div class="row justify-content-center">
 
-                🎫 Smart Ticket Router
+        <div class="col-lg-5 col-md-7 col-sm-10">
+
+            <div class="auth-card">
+
+                <div class="text-center mb-4">
+
+                    <i class="bi bi-ticket-perforated-fill text-primary"
+                       style="font-size:60px;"></i>
+
+                    <h2 class="auth-title mt-3">
+
+                        Welcome Back
+
+                    </h2>
+
+                    <p class="auth-subtitle">
+
+                        Login to Smart Ticket Router
+
+                    </p>
+
+                </div>
+
+                <!-- Login Error -->
+
+                <div th:if="${param.error}"
+                     class="alert alert-danger">
+
+                    <i class="bi bi-exclamation-triangle-fill me-2"></i>
+
+                    Invalid email or password.
+
+                </div>
+
+                <!-- Logout Success -->
+
+                <div th:if="${param.logout}"
+                     class="alert alert-success">
+
+                    <i class="bi bi-check-circle-fill me-2"></i>
+
+                    Logged out successfully.
+
+                </div>
+
+                <!-- Login Form -->
+
+                <form th:action="@{/login}"
+                      method="post">
+
+                    <div class="mb-3">
+
+                        <label class="form-label">
+
+                            Email Address
+
+                        </label>
+
+                        <div class="input-group">
+
+                            <span class="input-group-text">
+
+                                <i class="bi bi-envelope-fill"></i>
+
+                            </span>
+
+                            <input
+                                    type="email"
+                                    name="username"
+                                    class="form-control"
+                                    placeholder="Enter your email"
+                                    required>
+
+                        </div>
+
+                    </div>
+
+                    <div class="mb-4">
+
+                        <label class="form-label">
+
+                            Password
+
+                        </label>
+
+                        <div class="input-group">
+
+                            <span class="input-group-text">
+
+                                <i class="bi bi-lock-fill"></i>
+
+                            </span>
+
+                            <input
+                                    type="password"
+                                    id="password"
+                                    name="password"
+                                    class="form-control"
+                                    placeholder="Enter your password"
+                                    required>
+
+                            <button
+                                    class="btn btn-outline-secondary"
+                                    type="button"
+                                    onclick="togglePassword()">
+
+                                <i id="eye"
+                                   class="bi bi-eye-fill"></i>
+
+                            </button>
+
+                        </div>
+
+                    </div>
+
+                    <div class="d-grid">
+
+                        <button
+                                class="btn btn-primary btn-lg">
+
+                            <i class="bi bi-box-arrow-in-right me-2"></i>
+
+                            Login
+
+                        </button>
+
+                    </div>
+
+                </form>
+
+                <hr class="my-4">
+
+                <div class="text-center">
+
+                    <p>
+
+                        Don't have an account?
+
+                    </p>
+
+                    <a th:href="@{/register}"
+                       class="btn btn-outline-primary">
+
+                        <i class="bi bi-person-plus-fill me-2"></i>
+
+                        Create Account
+
+                    </a>
+
+                </div>
 
             </div>
-
-            <p class="text-muted">
-
-                AI Powered Customer Support System
-
-            </p>
-
-        </div>
-
-        <form th:action="@{/login}" method="post">
-
-            <div class="mb-3">
-
-                <label class="form-label">
-
-                    Email
-
-                </label>
-
-                <input
-                        type="email"
-                        name="username"
-                        class="form-control"
-                        placeholder="Enter email"
-                        required>
-
-            </div>
-
-            <div class="mb-4">
-
-                <label class="form-label">
-
-                    Password
-
-                </label>
-
-                <input
-                        type="password"
-                        name="password"
-                        class="form-control"
-                        placeholder="Enter password"
-                        required>
-
-            </div>
-
-            <div th:if="${param.error}"
-                 class="alert alert-danger">
-
-                Invalid email or password.
-
-            </div>
-
-            <div th:if="${param.logout}"
-                 class="alert alert-success">
-
-                Logged out successfully.
-
-            </div>
-
-            <button
-                    class="btn btn-primary w-100">
-
-                Login
-
-            </button>
-
-        </form>
-
-        <hr>
-
-        <div class="text-center">
-
-            New User?
-
-            <a href="/register">
-
-                Register Here
-
-            </a>
-
-        </div>
-
-        <hr>
-
-        <div class="small text-center text-muted">
-
-            <strong>Admin Login</strong>
-
-            <br><br>
-
-            Email :
-            <strong>admin@gmail.com</strong>
-
-            <br>
-
-            Password :
-            <strong>Your Admin Password</strong>
 
         </div>
 
     </div>
 
 </div>
+
+<!-- Footer -->
+
+<div th:replace="fragments/footer :: footer"></div>
+
+<!-- Bootstrap JS -->
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+
+<script>
+
+    function togglePassword(){
+
+        const password=document.getElementById("password");
+
+        const eye=document.getElementById("eye");
+
+        if(password.type==="password"){
+
+            password.type="text";
+
+            eye.classList.remove("bi-eye-fill");
+
+            eye.classList.add("bi-eye-slash-fill");
+
+        }else{
+
+            password.type="password";
+
+            eye.classList.remove("bi-eye-slash-fill");
+
+            eye.classList.add("bi-eye-fill");
+
+        }
+
+    }
+
+</script>
 
 </body>
 

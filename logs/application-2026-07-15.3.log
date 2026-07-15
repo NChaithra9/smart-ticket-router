@@ -1,0 +1,247 @@
+2026-07-15 17:27:31 INFO  [http-nio-8080-exec-6] c.e.s.service.TicketRoutingService - Ticket routing completed successfully.
+2026-07-15 17:27:31 INFO  [http-nio-8080-exec-6] c.e.s.controller.TicketWebController - Ticket routed successfully.
+2026-07-15 17:27:31 DEBUG [http-nio-8080-exec-6] c.e.s.controller.TicketWebController - Authenticated user: mansi@gmail.com
+2026-07-15 17:27:31 INFO  [http-nio-8080-exec-6] c.e.s.controller.TicketWebController - Ticket saved successfully for user: mansi@gmail.com
+2026-07-15 17:27:31 INFO  [http-nio-8080-exec-6] c.e.s.controller.TicketWebController - Rendering ticket routing result.
+2026-07-15 17:28:13 INFO  [http-nio-8080-exec-5] c.e.s.s.CustomUserDetailsService - Authenticating user with email: admin@gmail.com
+2026-07-15 17:28:13 WARN  [http-nio-8080-exec-5] c.e.s.s.CustomUserDetailsService - User not found with email: admin@gmail.com
+2026-07-15 17:28:13 INFO  [http-nio-8080-exec-5] c.e.s.s.CustomUserDetailsService - Authenticating user with email: admin@gmail.com
+2026-07-15 17:28:13 WARN  [http-nio-8080-exec-5] c.e.s.s.CustomUserDetailsService - User not found with email: admin@gmail.com
+2026-07-15 17:48:16 INFO  [File Watcher] o.s.b.d.a.LocalDevToolsAutoConfiguration$RestartingClassPathChangeChangedEventListener - Restarting due to 1 class path change (1 addition, 0 deletions, 0 modifications)
+2026-07-15 17:48:16 INFO  [Thread-1] o.s.boot.tomcat.GracefulShutdown - Commencing graceful shutdown. Waiting for active requests to complete
+2026-07-15 17:48:16 INFO  [tomcat-shutdown] o.a.coyote.http11.Http11NioProtocol - Pausing ProtocolHandler ["http-nio-8080"]
+2026-07-15 17:48:16 INFO  [tomcat-shutdown] o.s.boot.tomcat.GracefulShutdown - Graceful shutdown complete
+2026-07-15 17:48:16 INFO  [Thread-1] o.a.coyote.http11.Http11NioProtocol - Stopping ProtocolHandler ["http-nio-8080"]
+2026-07-15 17:48:16 INFO  [Thread-1] o.s.o.j.LocalContainerEntityManagerFactoryBean - Closing JPA EntityManagerFactory for persistence unit 'default'
+2026-07-15 17:48:16 INFO  [Thread-1] com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Shutdown initiated...
+2026-07-15 17:48:16 INFO  [Thread-1] com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Shutdown completed.
+2026-07-15 17:48:16 INFO  [restartedMain] c.e.s.SmartTicketRouterApplication - Starting Smart Ticket Router application...
+2026-07-15 17:48:16 INFO  [restartedMain] c.e.s.SmartTicketRouterApplication - Starting SmartTicketRouterApplication using Java 21.0.11 with PID 87491 (/Users/n.chaithra/Downloads/smart-ticket-router/target/classes started by n.chaithra in /Users/n.chaithra/Downloads/smart-ticket-router)
+2026-07-15 17:48:16 DEBUG [restartedMain] c.e.s.SmartTicketRouterApplication - Running with Spring Boot v4.1.0, Spring v7.0.8
+2026-07-15 17:48:16 INFO  [restartedMain] c.e.s.SmartTicketRouterApplication - No active profile set, falling back to 1 default profile: "default"
+2026-07-15 17:48:16 INFO  [restartedMain] o.s.d.r.c.RepositoryConfigurationDelegate - Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2026-07-15 17:48:16 INFO  [restartedMain] o.s.d.r.c.RepositoryConfigurationDelegate - Finished Spring Data repository scanning in 4 ms. Found 2 JPA repository interfaces.
+2026-07-15 17:48:16 INFO  [restartedMain] o.s.boot.tomcat.TomcatWebServer - Tomcat initialized with port 8080 (http)
+2026-07-15 17:48:16 INFO  [restartedMain] o.a.coyote.http11.Http11NioProtocol - Initializing ProtocolHandler ["http-nio-8080"]
+2026-07-15 17:48:16 INFO  [restartedMain] o.a.catalina.core.StandardService - Starting service [Tomcat]
+2026-07-15 17:48:16 INFO  [restartedMain] o.a.catalina.core.StandardEngine - Starting Servlet engine: [Apache Tomcat/11.0.22]
+2026-07-15 17:48:16 INFO  [restartedMain] o.s.b.w.c.s.WebApplicationContextInitializer - Root WebApplicationContext: initialization completed in 149 ms
+2026-07-15 17:48:16 INFO  [restartedMain] org.hibernate.orm.jpa - HHH008540: Processing PersistenceUnitInfo [name: default]
+2026-07-15 17:48:16 INFO  [restartedMain] o.s.o.j.p.SpringPersistenceUnitInfo - No LoadTimeWeaver setup: ignoring JPA class transformer
+2026-07-15 17:48:16 INFO  [restartedMain] com.zaxxer.hikari.HikariDataSource - HikariPool-2 - Starting...
+2026-07-15 17:48:16 INFO  [restartedMain] com.zaxxer.hikari.pool.HikariPool - HikariPool-2 - Added connection org.postgresql.jdbc.PgConnection@afdb97
+2026-07-15 17:48:16 INFO  [restartedMain] com.zaxxer.hikari.HikariDataSource - HikariPool-2 - Start completed.
+2026-07-15 17:48:16 INFO  [restartedMain] o.hibernate.orm.connections.pooling - HHH10001005: Database info:
+	Database JDBC URL [jdbc:postgresql://localhost:5432/smart_ticket_router]
+	Database driver: PostgreSQL JDBC Driver
+	Database dialect: PostgreSQLDialect
+	Database version: 18.4
+	Default catalog/schema: smart_ticket_router/public
+	Autocommit mode: undefined/unknown
+	Isolation level: READ_COMMITTED [default READ_COMMITTED]
+	JDBC fetch size: none
+	Pool: DataSourceConnectionProvider
+	Minimum pool size: undefined/unknown
+	Maximum pool size: undefined/unknown
+2026-07-15 17:48:16 INFO  [restartedMain] org.hibernate.orm.core - HHH000489: No JTA platform available (set 'hibernate.transaction.jta.platform' to enable JTA platform integration)
+2026-07-15 17:48:16 INFO  [restartedMain] o.s.o.j.LocalContainerEntityManagerFactoryBean - Initialized JPA EntityManagerFactory for persistence unit 'default'
+2026-07-15 17:48:16 INFO  [restartedMain] c.e.s.config.SecurityConfig - Creating BCryptPasswordEncoder bean.
+2026-07-15 17:48:16 INFO  [restartedMain] c.e.s.config.ChromaConfig - Initializing ChromaDB.
+2026-07-15 17:48:16 INFO  [restartedMain] c.e.s.service.ChromaService - Initializing ChromaDB collection.
+2026-07-15 17:48:16 INFO  [restartedMain] c.e.s.client.ChromaClient - Creating ChromaDB collection: tickets
+2026-07-15 17:48:16 INFO  [restartedMain] c.e.s.service.ChromaService - ChromaDB collection already exists.
+2026-07-15 17:48:16 INFO  [restartedMain] c.e.s.config.ChromaConfig - ChromaDB initialization completed successfully.
+2026-07-15 17:48:16 INFO  [restartedMain] c.e.s.config.SecurityConfig - Configuring DaoAuthenticationProvider.
+2026-07-15 17:48:16 DEBUG [restartedMain] c.e.s.config.SecurityConfig - Password encoder configured for authentication provider.
+2026-07-15 17:48:16 WARN  [restartedMain] o.s.b.j.a.JpaBaseConfiguration$JpaWebConfiguration - spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
+2026-07-15 17:48:16 INFO  [restartedMain] o.s.s.c.a.a.c.InitializeAuthenticationProviderBeanManagerConfigurer$InitializeAuthenticationProviderManagerConfigurer - Global AuthenticationManager configured with AuthenticationProvider bean with name authenticationProvider
+2026-07-15 17:48:16 WARN  [restartedMain] o.s.s.c.a.a.c.InitializeUserDetailsBeanManagerConfigurer$InitializeUserDetailsManagerConfigurer - Global AuthenticationManager configured with an AuthenticationProvider bean. UserDetailsService beans will not be used by Spring Security for automatically configuring username/password login. Consider removing the AuthenticationProvider bean. Alternatively, consider using the UserDetailsService in a manually instantiated DaoAuthenticationProvider. If the current configuration is intentional, to turn off this warning, increase the logging level of 'org.springframework.security.config.annotation.authentication.configuration.InitializeUserDetailsBeanManagerConfigurer' to ERROR
+2026-07-15 17:48:16 INFO  [restartedMain] c.e.s.config.SecurityConfig - Configuring Spring Security filter chain.
+2026-07-15 17:48:16 INFO  [restartedMain] c.e.s.config.SecurityConfig - Spring Security configuration completed.
+2026-07-15 17:48:16 INFO  [restartedMain] o.s.b.w.a.WelcomePageHandlerMapping - Adding welcome page template: index
+2026-07-15 17:48:16 INFO  [restartedMain] o.a.coyote.http11.Http11NioProtocol - Starting ProtocolHandler ["http-nio-8080"]
+2026-07-15 17:48:16 INFO  [restartedMain] o.s.boot.tomcat.TomcatWebServer - Tomcat started on port 8080 (http) with context path '/'
+2026-07-15 17:48:16 INFO  [restartedMain] c.e.s.SmartTicketRouterApplication - Started SmartTicketRouterApplication in 0.403 seconds (process running for 1334.785)
+2026-07-15 17:48:16 INFO  [restartedMain] c.e.s.config.AdminInitializer - Checking for default administrator account.
+2026-07-15 17:48:16 INFO  [restartedMain] c.e.s.config.AdminInitializer - Default administrator account not found. Creating administrator.
+2026-07-15 17:48:16 INFO  [restartedMain] c.e.s.config.AdminInitializer - Default administrator account created successfully.
+2026-07-15 17:48:16 INFO  [restartedMain] o.s.b.d.a.ConditionEvaluationDeltaLoggingListener - Condition evaluation unchanged
+2026-07-15 17:48:16 INFO  [restartedMain] c.e.s.SmartTicketRouterApplication - Smart Ticket Router application started successfully.
+2026-07-15 17:48:34 INFO  [background-preinit] o.h.validator.internal.util.Version - HV000001: Hibernate Validator 9.1.0.Final
+2026-07-15 17:48:34 INFO  [restartedMain] c.e.s.SmartTicketRouterApplication - Starting SmartTicketRouterApplication using Java 21.0.11 with PID 93848 (/Users/n.chaithra/Downloads/smart-ticket-router/target/classes started by n.chaithra in /Users/n.chaithra/Downloads/smart-ticket-router)
+2026-07-15 17:48:34 DEBUG [restartedMain] c.e.s.SmartTicketRouterApplication - Running with Spring Boot v4.1.0, Spring v7.0.8
+2026-07-15 17:48:34 INFO  [restartedMain] c.e.s.SmartTicketRouterApplication - No active profile set, falling back to 1 default profile: "default"
+2026-07-15 17:48:34 INFO  [restartedMain] o.s.b.d.e.DevToolsPropertyDefaultsPostProcessor - Devtools property defaults active! Set 'spring.devtools.add-properties' to 'false' to disable
+2026-07-15 17:48:34 INFO  [restartedMain] o.s.b.d.e.DevToolsPropertyDefaultsPostProcessor - For additional web related logging consider setting the 'logging.level.web' property to 'DEBUG'
+2026-07-15 17:48:35 INFO  [restartedMain] o.s.d.r.c.RepositoryConfigurationDelegate - Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2026-07-15 17:48:35 INFO  [restartedMain] o.s.d.r.c.RepositoryConfigurationDelegate - Finished Spring Data repository scanning in 18 ms. Found 2 JPA repository interfaces.
+2026-07-15 17:48:35 INFO  [restartedMain] o.s.boot.tomcat.TomcatWebServer - Tomcat initialized with port 8080 (http)
+2026-07-15 17:48:35 INFO  [restartedMain] o.a.coyote.http11.Http11NioProtocol - Initializing ProtocolHandler ["http-nio-8080"]
+2026-07-15 17:48:35 INFO  [restartedMain] o.a.catalina.core.StandardService - Starting service [Tomcat]
+2026-07-15 17:48:35 INFO  [restartedMain] o.a.catalina.core.StandardEngine - Starting Servlet engine: [Apache Tomcat/11.0.22]
+2026-07-15 17:48:35 INFO  [restartedMain] o.s.b.w.c.s.WebApplicationContextInitializer - Root WebApplicationContext: initialization completed in 454 ms
+2026-07-15 17:48:35 INFO  [restartedMain] org.hibernate.orm.jpa - HHH008540: Processing PersistenceUnitInfo [name: default]
+2026-07-15 17:48:35 INFO  [restartedMain] org.hibernate.orm.core - HHH000001: Hibernate ORM core version 7.4.1.Final
+2026-07-15 17:48:35 INFO  [restartedMain] o.s.o.j.p.SpringPersistenceUnitInfo - No LoadTimeWeaver setup: ignoring JPA class transformer
+2026-07-15 17:48:35 INFO  [restartedMain] com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Starting...
+2026-07-15 17:48:35 INFO  [restartedMain] com.zaxxer.hikari.pool.HikariPool - HikariPool-1 - Added connection org.postgresql.jdbc.PgConnection@690fff4c
+2026-07-15 17:48:35 INFO  [restartedMain] com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Start completed.
+2026-07-15 17:48:35 INFO  [restartedMain] o.hibernate.orm.connections.pooling - HHH10001005: Database info:
+	Database JDBC URL [jdbc:postgresql://localhost:5432/smart_ticket_router]
+	Database driver: PostgreSQL JDBC Driver
+	Database dialect: PostgreSQLDialect
+	Database version: 18.4
+	Default catalog/schema: smart_ticket_router/public
+	Autocommit mode: undefined/unknown
+	Isolation level: READ_COMMITTED [default READ_COMMITTED]
+	JDBC fetch size: none
+	Pool: DataSourceConnectionProvider
+	Minimum pool size: undefined/unknown
+	Maximum pool size: undefined/unknown
+2026-07-15 17:48:36 INFO  [restartedMain] org.hibernate.orm.core - HHH000489: No JTA platform available (set 'hibernate.transaction.jta.platform' to enable JTA platform integration)
+2026-07-15 17:48:36 INFO  [restartedMain] o.s.o.j.LocalContainerEntityManagerFactoryBean - Initialized JPA EntityManagerFactory for persistence unit 'default'
+2026-07-15 17:48:36 INFO  [restartedMain] o.s.d.j.r.q.QueryEnhancerFactories - Hibernate is in classpath; If applicable, HQL parser will be used.
+2026-07-15 17:48:36 INFO  [restartedMain] c.e.s.config.SecurityConfig - Creating BCryptPasswordEncoder bean.
+2026-07-15 17:48:36 INFO  [restartedMain] c.e.s.config.ChromaConfig - Initializing ChromaDB.
+2026-07-15 17:48:36 INFO  [restartedMain] c.e.s.service.ChromaService - Initializing ChromaDB collection.
+2026-07-15 17:48:36 INFO  [restartedMain] c.e.s.client.ChromaClient - Creating ChromaDB collection: tickets
+2026-07-15 17:48:36 INFO  [restartedMain] c.e.s.service.ChromaService - ChromaDB collection already exists.
+2026-07-15 17:48:36 INFO  [restartedMain] c.e.s.config.ChromaConfig - ChromaDB initialization completed successfully.
+2026-07-15 17:48:36 INFO  [restartedMain] c.e.s.config.SecurityConfig - Configuring DaoAuthenticationProvider.
+2026-07-15 17:48:36 DEBUG [restartedMain] c.e.s.config.SecurityConfig - Password encoder configured for authentication provider.
+2026-07-15 17:48:36 WARN  [restartedMain] o.s.b.j.a.JpaBaseConfiguration$JpaWebConfiguration - spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
+2026-07-15 17:48:36 INFO  [restartedMain] o.s.s.c.a.a.c.InitializeAuthenticationProviderBeanManagerConfigurer$InitializeAuthenticationProviderManagerConfigurer - Global AuthenticationManager configured with AuthenticationProvider bean with name authenticationProvider
+2026-07-15 17:48:36 WARN  [restartedMain] o.s.s.c.a.a.c.InitializeUserDetailsBeanManagerConfigurer$InitializeUserDetailsManagerConfigurer - Global AuthenticationManager configured with an AuthenticationProvider bean. UserDetailsService beans will not be used by Spring Security for automatically configuring username/password login. Consider removing the AuthenticationProvider bean. Alternatively, consider using the UserDetailsService in a manually instantiated DaoAuthenticationProvider. If the current configuration is intentional, to turn off this warning, increase the logging level of 'org.springframework.security.config.annotation.authentication.configuration.InitializeUserDetailsBeanManagerConfigurer' to ERROR
+2026-07-15 17:48:36 INFO  [restartedMain] c.e.s.config.SecurityConfig - Configuring Spring Security filter chain.
+2026-07-15 17:48:36 INFO  [restartedMain] c.e.s.config.SecurityConfig - Spring Security configuration completed.
+2026-07-15 17:48:36 INFO  [restartedMain] o.s.b.w.a.WelcomePageHandlerMapping - Adding welcome page template: index
+2026-07-15 17:48:36 INFO  [restartedMain] o.a.coyote.http11.Http11NioProtocol - Starting ProtocolHandler ["http-nio-8080"]
+2026-07-15 17:48:36 WARN  [restartedMain] o.s.b.w.s.s.c.AnnotationConfigServletWebServerApplicationContext - Exception encountered during context initialization - cancelling refresh attempt: org.springframework.context.ApplicationContextException: Failed to start bean 'webServerStartStop'
+2026-07-15 17:48:36 INFO  [restartedMain] o.s.o.j.LocalContainerEntityManagerFactoryBean - Closing JPA EntityManagerFactory for persistence unit 'default'
+2026-07-15 17:48:36 INFO  [restartedMain] com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Shutdown initiated...
+2026-07-15 17:48:36 INFO  [restartedMain] com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Shutdown completed.
+2026-07-15 17:48:36 INFO  [restartedMain] o.s.b.a.l.ConditionEvaluationReportLogger - 
+
+Error starting ApplicationContext. To display the condition evaluation report re-run your application with 'debug' enabled.
+2026-07-15 17:48:36 ERROR [restartedMain] o.s.b.d.LoggingFailureAnalysisReporter - 
+
+***************************
+APPLICATION FAILED TO START
+***************************
+
+Description:
+
+Web server failed to start. Port 8080 was already in use.
+
+Action:
+
+Identify and stop the process that's listening on port 8080 or configure this application to listen on another port.
+
+2026-07-15 17:48:43 INFO  [SpringApplicationShutdownHook] o.s.boot.tomcat.GracefulShutdown - Commencing graceful shutdown. Waiting for active requests to complete
+2026-07-15 17:48:43 INFO  [tomcat-shutdown] o.s.boot.tomcat.GracefulShutdown - Graceful shutdown complete
+2026-07-15 17:48:43 INFO  [SpringApplicationShutdownHook] o.s.o.j.LocalContainerEntityManagerFactoryBean - Closing JPA EntityManagerFactory for persistence unit 'default'
+2026-07-15 17:48:43 INFO  [SpringApplicationShutdownHook] com.zaxxer.hikari.HikariDataSource - HikariPool-2 - Shutdown initiated...
+2026-07-15 17:48:43 INFO  [SpringApplicationShutdownHook] com.zaxxer.hikari.HikariDataSource - HikariPool-2 - Shutdown completed.
+2026-07-15 17:48:50 INFO  [background-preinit] o.h.validator.internal.util.Version - HV000001: Hibernate Validator 9.1.0.Final
+2026-07-15 17:48:50 INFO  [restartedMain] c.e.s.SmartTicketRouterApplication - Starting SmartTicketRouterApplication using Java 21.0.11 with PID 94497 (/Users/n.chaithra/Downloads/smart-ticket-router/target/classes started by n.chaithra in /Users/n.chaithra/Downloads/smart-ticket-router)
+2026-07-15 17:48:50 DEBUG [restartedMain] c.e.s.SmartTicketRouterApplication - Running with Spring Boot v4.1.0, Spring v7.0.8
+2026-07-15 17:48:50 INFO  [restartedMain] c.e.s.SmartTicketRouterApplication - No active profile set, falling back to 1 default profile: "default"
+2026-07-15 17:48:50 INFO  [restartedMain] o.s.b.d.e.DevToolsPropertyDefaultsPostProcessor - Devtools property defaults active! Set 'spring.devtools.add-properties' to 'false' to disable
+2026-07-15 17:48:50 INFO  [restartedMain] o.s.b.d.e.DevToolsPropertyDefaultsPostProcessor - For additional web related logging consider setting the 'logging.level.web' property to 'DEBUG'
+2026-07-15 17:48:50 INFO  [restartedMain] o.s.d.r.c.RepositoryConfigurationDelegate - Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2026-07-15 17:48:50 INFO  [restartedMain] o.s.d.r.c.RepositoryConfigurationDelegate - Finished Spring Data repository scanning in 17 ms. Found 2 JPA repository interfaces.
+2026-07-15 17:48:50 INFO  [restartedMain] o.s.boot.tomcat.TomcatWebServer - Tomcat initialized with port 8080 (http)
+2026-07-15 17:48:50 INFO  [restartedMain] o.a.coyote.http11.Http11NioProtocol - Initializing ProtocolHandler ["http-nio-8080"]
+2026-07-15 17:48:50 INFO  [restartedMain] o.a.catalina.core.StandardService - Starting service [Tomcat]
+2026-07-15 17:48:50 INFO  [restartedMain] o.a.catalina.core.StandardEngine - Starting Servlet engine: [Apache Tomcat/11.0.22]
+2026-07-15 17:48:51 INFO  [restartedMain] o.s.b.w.c.s.WebApplicationContextInitializer - Root WebApplicationContext: initialization completed in 448 ms
+2026-07-15 17:48:51 INFO  [restartedMain] org.hibernate.orm.jpa - HHH008540: Processing PersistenceUnitInfo [name: default]
+2026-07-15 17:48:51 INFO  [restartedMain] org.hibernate.orm.core - HHH000001: Hibernate ORM core version 7.4.1.Final
+2026-07-15 17:48:51 INFO  [restartedMain] o.s.o.j.p.SpringPersistenceUnitInfo - No LoadTimeWeaver setup: ignoring JPA class transformer
+2026-07-15 17:48:51 INFO  [restartedMain] com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Starting...
+2026-07-15 17:48:51 INFO  [restartedMain] com.zaxxer.hikari.pool.HikariPool - HikariPool-1 - Added connection org.postgresql.jdbc.PgConnection@33e163c7
+2026-07-15 17:48:51 INFO  [restartedMain] com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Start completed.
+2026-07-15 17:48:51 INFO  [restartedMain] o.hibernate.orm.connections.pooling - HHH10001005: Database info:
+	Database JDBC URL [jdbc:postgresql://localhost:5432/smart_ticket_router]
+	Database driver: PostgreSQL JDBC Driver
+	Database dialect: PostgreSQLDialect
+	Database version: 18.4
+	Default catalog/schema: smart_ticket_router/public
+	Autocommit mode: undefined/unknown
+	Isolation level: READ_COMMITTED [default READ_COMMITTED]
+	JDBC fetch size: none
+	Pool: DataSourceConnectionProvider
+	Minimum pool size: undefined/unknown
+	Maximum pool size: undefined/unknown
+2026-07-15 17:48:51 INFO  [restartedMain] org.hibernate.orm.core - HHH000489: No JTA platform available (set 'hibernate.transaction.jta.platform' to enable JTA platform integration)
+2026-07-15 17:48:51 INFO  [restartedMain] o.s.o.j.LocalContainerEntityManagerFactoryBean - Initialized JPA EntityManagerFactory for persistence unit 'default'
+2026-07-15 17:48:51 INFO  [restartedMain] o.s.d.j.r.q.QueryEnhancerFactories - Hibernate is in classpath; If applicable, HQL parser will be used.
+2026-07-15 17:48:51 INFO  [restartedMain] c.e.s.config.SecurityConfig - Creating BCryptPasswordEncoder bean.
+2026-07-15 17:48:51 INFO  [restartedMain] c.e.s.config.ChromaConfig - Initializing ChromaDB.
+2026-07-15 17:48:51 INFO  [restartedMain] c.e.s.service.ChromaService - Initializing ChromaDB collection.
+2026-07-15 17:48:51 INFO  [restartedMain] c.e.s.client.ChromaClient - Creating ChromaDB collection: tickets
+2026-07-15 17:48:51 INFO  [restartedMain] c.e.s.service.ChromaService - ChromaDB collection already exists.
+2026-07-15 17:48:51 INFO  [restartedMain] c.e.s.config.ChromaConfig - ChromaDB initialization completed successfully.
+2026-07-15 17:48:51 INFO  [restartedMain] c.e.s.config.SecurityConfig - Configuring DaoAuthenticationProvider.
+2026-07-15 17:48:51 DEBUG [restartedMain] c.e.s.config.SecurityConfig - Password encoder configured for authentication provider.
+2026-07-15 17:48:51 WARN  [restartedMain] o.s.b.j.a.JpaBaseConfiguration$JpaWebConfiguration - spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
+2026-07-15 17:48:51 INFO  [restartedMain] o.s.s.c.a.a.c.InitializeAuthenticationProviderBeanManagerConfigurer$InitializeAuthenticationProviderManagerConfigurer - Global AuthenticationManager configured with AuthenticationProvider bean with name authenticationProvider
+2026-07-15 17:48:51 WARN  [restartedMain] o.s.s.c.a.a.c.InitializeUserDetailsBeanManagerConfigurer$InitializeUserDetailsManagerConfigurer - Global AuthenticationManager configured with an AuthenticationProvider bean. UserDetailsService beans will not be used by Spring Security for automatically configuring username/password login. Consider removing the AuthenticationProvider bean. Alternatively, consider using the UserDetailsService in a manually instantiated DaoAuthenticationProvider. If the current configuration is intentional, to turn off this warning, increase the logging level of 'org.springframework.security.config.annotation.authentication.configuration.InitializeUserDetailsBeanManagerConfigurer' to ERROR
+2026-07-15 17:48:51 INFO  [restartedMain] c.e.s.config.SecurityConfig - Configuring Spring Security filter chain.
+2026-07-15 17:48:51 INFO  [restartedMain] c.e.s.config.SecurityConfig - Spring Security configuration completed.
+2026-07-15 17:48:51 INFO  [restartedMain] o.s.b.w.a.WelcomePageHandlerMapping - Adding welcome page template: index
+2026-07-15 17:48:51 INFO  [restartedMain] o.a.coyote.http11.Http11NioProtocol - Starting ProtocolHandler ["http-nio-8080"]
+2026-07-15 17:48:51 INFO  [restartedMain] o.s.boot.tomcat.TomcatWebServer - Tomcat started on port 8080 (http) with context path '/'
+2026-07-15 17:48:51 INFO  [restartedMain] c.e.s.SmartTicketRouterApplication - Started SmartTicketRouterApplication in 1.608 seconds (process running for 1.762)
+2026-07-15 17:48:51 INFO  [restartedMain] c.e.s.config.AdminInitializer - Checking for default administrator account.
+2026-07-15 17:48:52 INFO  [restartedMain] c.e.s.config.AdminInitializer - Default administrator account already exists.
+2026-07-15 17:48:52 INFO  [restartedMain] c.e.s.SmartTicketRouterApplication - Smart Ticket Router application started successfully.
+2026-07-15 17:49:00 INFO  [http-nio-8080-exec-1] o.a.c.c.C.[Tomcat].[localhost].[/] - Initializing Spring DispatcherServlet 'dispatcherServlet'
+2026-07-15 17:49:00 INFO  [http-nio-8080-exec-1] o.s.web.servlet.DispatcherServlet - Initializing Servlet 'dispatcherServlet'
+2026-07-15 17:49:00 INFO  [http-nio-8080-exec-1] o.s.web.servlet.DispatcherServlet - Completed initialization in 0 ms
+2026-07-15 17:49:20 INFO  [http-nio-8080-exec-9] c.e.s.s.CustomUserDetailsService - Authenticating user with email: admin@example.com
+2026-07-15 17:49:20 INFO  [http-nio-8080-exec-9] c.e.s.s.CustomUserDetailsService - User authenticated successfully: admin@example.com
+2026-07-15 17:49:20 INFO  [http-nio-8080-exec-10] c.e.s.controller.AdminController - Fetching all support tickets for admin.
+2026-07-15 17:49:20 DEBUG [http-nio-8080-exec-10] c.e.s.controller.AdminController - Retrieved 6 tickets.
+2026-07-15 17:49:20 INFO  [http-nio-8080-exec-10] c.e.s.controller.AdminController - Rendering admin tickets page.
+2026-07-15 17:50:50 INFO  [http-nio-8080-exec-10] c.e.s.controller.AdminController - Admin dashboard requested.
+2026-07-15 17:50:52 INFO  [http-nio-8080-exec-7] c.e.s.controller.AdminController - Fetching all support tickets for admin.
+2026-07-15 17:50:52 DEBUG [http-nio-8080-exec-7] c.e.s.controller.AdminController - Retrieved 6 tickets.
+2026-07-15 17:50:52 INFO  [http-nio-8080-exec-7] c.e.s.controller.AdminController - Rendering admin tickets page.
+2026-07-15 17:50:55 INFO  [http-nio-8080-exec-5] c.e.s.controller.AdminController - Admin dashboard requested.
+2026-07-15 17:50:57 INFO  [http-nio-8080-exec-1] c.e.s.c.TicketHistoryController - Fetching ticket history for the authenticated user.
+2026-07-15 17:50:57 DEBUG [http-nio-8080-exec-1] c.e.s.c.TicketHistoryController - Authenticated user: admin@example.com
+2026-07-15 17:50:57 DEBUG [http-nio-8080-exec-1] c.e.s.c.TicketHistoryController - Retrieved 0 tickets for user admin@example.com.
+2026-07-15 17:50:57 INFO  [http-nio-8080-exec-1] c.e.s.c.TicketHistoryController - Rendering ticket history page.
+2026-07-15 17:51:01 INFO  [http-nio-8080-exec-4] c.e.s.controller.AdminController - Fetching all support tickets for admin.
+2026-07-15 17:51:01 DEBUG [http-nio-8080-exec-4] c.e.s.controller.AdminController - Retrieved 6 tickets.
+2026-07-15 17:51:01 INFO  [http-nio-8080-exec-4] c.e.s.controller.AdminController - Rendering admin tickets page.
+2026-07-15 17:51:14 INFO  [http-nio-8080-exec-9] c.e.s.controller.AdminController - Fetching all support tickets for admin.
+2026-07-15 17:51:14 DEBUG [http-nio-8080-exec-9] c.e.s.controller.AdminController - Retrieved 6 tickets.
+2026-07-15 17:51:14 INFO  [http-nio-8080-exec-9] c.e.s.controller.AdminController - Rendering admin tickets page.
+2026-07-15 17:51:21 INFO  [http-nio-8080-exec-2] c.e.s.c.TicketHistoryController - Fetching ticket history for the authenticated user.
+2026-07-15 17:51:21 DEBUG [http-nio-8080-exec-2] c.e.s.c.TicketHistoryController - Authenticated user: admin@example.com
+2026-07-15 17:51:21 DEBUG [http-nio-8080-exec-2] c.e.s.c.TicketHistoryController - Retrieved 0 tickets for user admin@example.com.
+2026-07-15 17:51:21 INFO  [http-nio-8080-exec-2] c.e.s.c.TicketHistoryController - Rendering ticket history page.
+2026-07-15 17:51:24 INFO  [http-nio-8080-exec-5] c.e.s.controller.AdminController - Fetching all support tickets for admin.
+2026-07-15 17:51:24 DEBUG [http-nio-8080-exec-5] c.e.s.controller.AdminController - Retrieved 6 tickets.
+2026-07-15 17:51:24 INFO  [http-nio-8080-exec-5] c.e.s.controller.AdminController - Rendering admin tickets page.
+2026-07-15 18:04:48 INFO  [SpringApplicationShutdownHook] o.s.boot.tomcat.GracefulShutdown - Commencing graceful shutdown. Waiting for active requests to complete
+2026-07-15 18:04:48 INFO  [tomcat-shutdown] o.s.boot.tomcat.GracefulShutdown - Graceful shutdown complete
+2026-07-15 18:04:48 INFO  [SpringApplicationShutdownHook] o.s.o.j.LocalContainerEntityManagerFactoryBean - Closing JPA EntityManagerFactory for persistence unit 'default'
+2026-07-15 18:04:48 INFO  [SpringApplicationShutdownHook] com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Shutdown initiated...
+2026-07-15 18:04:48 INFO  [SpringApplicationShutdownHook] com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Shutdown completed.
+2026-07-15 20:54:17 INFO  [background-preinit] o.h.validator.internal.util.Version - HV000001: Hibernate Validator 9.1.0.Final
+2026-07-15 20:54:17 INFO  [restartedMain] c.e.s.SmartTicketRouterApplication - Starting SmartTicketRouterApplication using Java 21.0.11 with PID 6276 (/Users/n.chaithra/Downloads/smart-ticket-router/target/classes started by n.chaithra in /Users/n.chaithra/Downloads/smart-ticket-router)
+2026-07-15 20:54:17 DEBUG [restartedMain] c.e.s.SmartTicketRouterApplication - Running with Spring Boot v4.1.0, Spring v7.0.8
+2026-07-15 20:54:17 INFO  [restartedMain] c.e.s.SmartTicketRouterApplication - No active profile set, falling back to 1 default profile: "default"
+2026-07-15 20:54:17 INFO  [restartedMain] o.s.b.d.e.DevToolsPropertyDefaultsPostProcessor - Devtools property defaults active! Set 'spring.devtools.add-properties' to 'false' to disable
+2026-07-15 20:54:17 INFO  [restartedMain] o.s.b.d.e.DevToolsPropertyDefaultsPostProcessor - For additional web related logging consider setting the 'logging.level.web' property to 'DEBUG'
+2026-07-15 20:54:18 INFO  [restartedMain] o.s.d.r.c.RepositoryConfigurationDelegate - Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2026-07-15 20:54:18 INFO  [restartedMain] o.s.d.r.c.RepositoryConfigurationDelegate - Finished Spring Data repository scanning in 21 ms. Found 2 JPA repository interfaces.
+2026-07-15 20:54:18 INFO  [restartedMain] o.s.boot.tomcat.TomcatWebServer - Tomcat initialized with port 8080 (http)
+2026-07-15 20:54:18 INFO  [restartedMain] o.a.coyote.http11.Http11NioProtocol - Initializing ProtocolHandler ["http-nio-8080"]
+2026-07-15 20:54:18 INFO  [restartedMain] o.a.catalina.core.StandardService - Starting service [Tomcat]
+2026-07-15 20:54:18 INFO  [restartedMain] o.a.catalina.core.StandardEngine - Starting Servlet engine: [Apache Tomcat/11.0.22]
+2026-07-15 20:54:18 INFO  [restartedMain] o.s.b.w.c.s.WebApplicationContextInitializer - Root WebApplicationContext: initialization completed in 627 ms
+2026-07-15 20:54:18 INFO  [restartedMain] org.hibernate.orm.jpa - HHH008540: Processing PersistenceUnitInfo [name: default]

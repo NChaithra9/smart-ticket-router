@@ -44,4 +44,4 @@ build/
 !**/src/test/**/build/
 
 # macOS
-.DS_Store
+.DS_Storelogs/

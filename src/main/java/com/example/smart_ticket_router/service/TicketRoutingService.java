@@ -6,6 +6,8 @@ import com.example.smart_ticket_router.model.TicketResponse;
 import com.example.smart_ticket_router.prompt.PromptBuilder;
 import com.example.smart_ticket_router.repository.TicketRepository;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -13,11 +15,12 @@ import java.time.LocalDateTime;
 @Service
 public class TicketRoutingService {
 
+    private static final Logger logger =
+            LoggerFactory.getLogger(TicketRoutingService.class);
+
     private final OpenAIClient openAIClient;
     private final TicketRepository ticketRepository;
     private final EmbeddingService embeddingService;
-
-    // Create ObjectMapper directly
     private final ObjectMapper mapper = new ObjectMapper();
 
     public TicketRoutingService(OpenAIClient openAIClient,
@@ -33,10 +36,15 @@ public class TicketRoutingService {
 
         try {
 
+            logger.info("Received ticket for routing.");
+
             // Build prompt
             String prompt = PromptBuilder.buildPrompt(message);
 
+            logger.debug("Prompt built successfully.");
+
             // Ask OpenAI
+            logger.info("Sending request to OpenAI...");
             String json = openAIClient.askOpenAI(prompt);
 
             // Remove markdown if GPT returns ```json ... ```
@@ -44,15 +52,16 @@ public class TicketRoutingService {
                        .replace("```", "")
                        .trim();
 
-            System.out.println("========== OPENAI RESPONSE ==========");
-            System.out.println(json);
-            System.out.println("=====================================");
+            logger.info("Received response from OpenAI.");
+            logger.debug("OpenAI JSON Response: {}", json);
 
             // Convert JSON to Java object
             TicketResponse response =
                     mapper.readValue(json, TicketResponse.class);
 
-            // Save ticket
+            logger.info("Successfully parsed OpenAI response.");
+
+            // Create Ticket entity
             Ticket ticket = new Ticket();
 
             ticket.setMessage(message);
@@ -62,29 +71,40 @@ public class TicketRoutingService {
             ticket.setReason(response.getReason());
             ticket.setCreatedAt(LocalDateTime.now());
 
+            logger.info("Saving ticket to PostgreSQL...");
+
             Ticket savedTicket = ticketRepository.save(ticket);
 
-            // Store embedding in ChromaDB
-            //embeddingService.storeTicket(
-              //      savedTicket.getId().toString(),
-                //    savedTicket.getMessage()
-            //);
+            logger.info("Ticket saved successfully. Ticket ID: {}",
+                    savedTicket.getId());
+
+            // Store embedding
             try {
-    embeddingService.storeTicket(
-            savedTicket.getId().toString(),
-            savedTicket.getMessage()
-    );
-} catch (Exception e) {
-    System.out.println("ChromaDB is not running. Skipping embedding storage.");
-}
+
+                logger.info("Generating embedding for Ticket ID: {}",
+                        savedTicket.getId());
+
+                embeddingService.storeTicket(
+                        savedTicket.getId().toString(),
+                        savedTicket.getMessage()
+                );
+
+                logger.info("Embedding stored successfully in ChromaDB.");
+
+            } catch (Exception ex) {
+
+                logger.warn("ChromaDB is unavailable. Embedding storage skipped.");
+
+                logger.debug("ChromaDB Exception:", ex);
+            }
+
+            logger.info("Ticket routing completed successfully.");
 
             return response;
 
         } catch (Exception e) {
 
-            System.err.println("=========== ERROR ===========");
-            e.printStackTrace();
-            System.err.println("=============================");
+            logger.error("Error while routing ticket.", e);
 
             throw new RuntimeException("Error while routing ticket", e);
         }

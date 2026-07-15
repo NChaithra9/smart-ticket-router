@@ -6,219 +6,276 @@
 
     <meta charset="UTF-8">
 
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1">
+
     <title>Smart Ticket Router</title>
 
-    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- Bootstrap -->
 
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
           rel="stylesheet">
 
+    <!-- Bootstrap Icons -->
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css"
+          rel="stylesheet">
+
+    <!-- Google Font -->
+
+    <link rel="preconnect"
+          href="https://fonts.googleapis.com">
+
+    <link rel="preconnect"
+          href="https://fonts.gstatic.com"
+          crossorigin>
+
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap"
+          rel="stylesheet">
+
+    <!-- Custom CSS -->
+
+    <link rel="stylesheet"
+          th:href="@{/css/style.css}">
+
 </head>
 
-<body class="bg-light">
+<body>
 
-<nav class="navbar navbar-dark bg-primary">
+<div th:replace="fragments/navbar :: navbar"></div>
 
-    <div class="container">
+<div class="container py-5">
 
-        <span class="navbar-brand fw-bold">
+    <!-- Hero -->
 
-            🎫 Smart Ticket Router
+    <div class="text-center mb-5">
 
-        </span>
+        <h1 class="page-title">
 
-        <div>
+            AI Powered Smart Ticket Router
 
-            <span class="text-white me-3">
+        </h1>
 
-                Welcome,
-                <strong sec:authentication="name"></strong>
+        <p class="page-subtitle">
 
-            </span>
+            Submit your support request and let AI automatically classify,
+            prioritize and assign it to the correct team.
 
-            <a href="/my-tickets"
-               class="btn btn-light btn-sm">
+        </p>
 
-                My Tickets
+    </div>
 
-            </a>
+    <div class="row">
 
-            <a sec:authorize="hasRole('ADMIN')"
-               href="/admin"
-               class="btn btn-warning btn-sm">
+        <!-- Left -->
 
-                Admin
+        <div class="col-lg-8">
 
-            </a>
+            <div class="card p-4">
 
-            <a href="/logout"
-               class="btn btn-danger btn-sm">
+                <h3 class="mb-4">
 
-                Logout
+                    <i class="bi bi-pencil-square text-primary me-2"></i>
 
-            </a>
+                    Submit Support Ticket
+
+                </h3>
+
+                <form
+                        th:action="@{/route}"
+                        method="post"
+                        th:object="${ticketRequest}">
+
+                    <div class="mb-4">
+
+                        <label class="form-label fw-semibold">
+
+                            Describe your issue
+
+                        </label>
+
+                        <textarea
+                                class="form-control"
+                                rows="8"
+                                th:field="*{message}"
+                                placeholder="Example: I forgot my password after enabling two-factor authentication..."
+                                required>
+
+                        </textarea>
+
+                    </div>
+
+                    <button
+                            class="btn btn-primary btn-lg">
+
+                        <i class="bi bi-cpu-fill me-2"></i>
+
+                        Route Ticket
+
+                    </button>
+
+                </form>
+
+            </div>
+
+        </div>
+
+        <!-- Right -->
+
+        <div class="col-lg-4">
+
+            <div class="dashboard-card">
+
+                <i class="bi bi-lightbulb-fill"></i>
+
+                <h4>
+
+                    Sample Tickets
+
+                </h4>
+
+                <hr>
+
+                <p>
+
+                    🔐 I forgot my password
+
+                </p>
+
+                <p>
+
+                    💳 Payment failed
+
+                </p>
+
+                <p>
+
+                    💥 App crashes after login
+
+                </p>
+
+                <p>
+
+                    👤 Delete my account
+
+                </p>
+
+                <p>
+
+                    🌙 Add dark mode
+
+                </p>
+
+            </div>
 
         </div>
 
     </div>
 
-</nav>
+    <!-- Result -->
 
-<div class="container mt-5">
+    <div
+            class="mt-5"
+            th:if="${response!=null}">
 
-    <div class="card shadow">
+        <h2 class="mb-4">
 
-        <div class="card-header bg-success text-white">
+            <i class="bi bi-robot text-success me-2"></i>
 
-            <h3>
+            AI Routing Result
 
-                Submit Support Ticket
+        </h2>
 
-            </h3>
+        <div class="row">
 
-        </div>
+            <div class="col-md-6">
 
-        <div class="card-body">
+                <div class="result-card">
 
-            <form th:action="@{/route}"
-                  method="post"
-                  th:object="${ticketRequest}">
-
-                <div class="mb-3">
-
-                    <label class="form-label">
-
-                        Describe your issue
-
-                    </label>
-
-                    <textarea
-                            class="form-control"
-                            rows="6"
-                            th:field="*{message}"
-                            placeholder="Example: I forgot my password..."
-                            required>
-
-                    </textarea>
-
-                </div>
-
-                <button class="btn btn-primary">
-
-                    Route Ticket
-
-                </button>
-
-            </form>
-
-        </div>
-
-    </div>
-
-    <br>
-
-    <div class="card shadow"
-         th:if="${response!=null}">
-
-        <div class="card-header bg-dark text-white">
-
-            <h3>
-
-                AI Routing Result
-
-            </h3>
-
-        </div>
-
-        <div class="card-body">
-
-            <table class="table table-bordered">
-
-                <tr>
-
-                    <th width="30%">
+                    <h6>
 
                         Category
 
-                    </th>
+                    </h6>
 
-                    <td th:text="${response.category}"></td>
+                    <span
+                            class="badge bg-primary"
+                            th:text="${response.category}">
 
-                </tr>
+                    </span>
 
-                <tr>
+                </div>
 
-                    <th>
+            </div>
+
+            <div class="col-md-6">
+
+                <div class="result-card">
+
+                    <h6>
 
                         Priority
 
-                    </th>
+                    </h6>
 
-                    <td th:text="${response.priority}"></td>
+                    <span
+                            class="badge bg-danger"
+                            th:text="${response.priority}">
 
-                </tr>
+                    </span>
 
-                <tr>
+                </div>
 
-                    <th>
+            </div>
+
+            <div class="col-md-6 mt-4">
+
+                <div class="result-card">
+
+                    <h6>
 
                         Assigned Team
 
-                    </th>
+                    </h6>
 
-                    <td th:text="${response.assignedTeam}"></td>
+                    <span
+                            class="badge bg-success"
+                            th:text="${response.assignedTeam}">
 
-                </tr>
+                    </span>
 
-                <tr>
+                </div>
 
-                    <th>
+            </div>
+
+            <div class="col-md-6 mt-4">
+
+                <div class="result-card">
+
+                    <h6>
 
                         Reason
 
-                    </th>
+                    </h6>
 
-                    <td th:text="${response.reason}"></td>
+                    <p class="mb-0"
+                       th:text="${response.reason}">
 
-                </tr>
+                    </p>
 
-            </table>
+                </div>
 
-        </div>
-
-    </div>
-
-    <br>
-
-    <div class="card">
-
-        <div class="card-header">
-
-            Sample Tickets
-
-        </div>
-
-        <div class="card-body">
-
-            <ul>
-
-                <li>I forgot my password.</li>
-
-                <li>I was charged twice.</li>
-
-                <li>The application crashes after login.</li>
-
-                <li>Please delete my account.</li>
-
-                <li>Add dark mode.</li>
-
-            </ul>
+            </div>
 
         </div>
 
     </div>
 
 </div>
+
+<div th:replace="fragments/footer :: footer"></div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 
 </body>
 
