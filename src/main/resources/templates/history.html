@@ -41,7 +41,7 @@
 
 <body>
 
-<div th:replace="~{fragments/navbar :: navbar"}></div>
+<div th:replace="~{fragments/navbar :: navbar}"></div>
 
 <div class="container py-5">
 
@@ -114,6 +114,8 @@
 
                     <th>Reason</th>
 
+                    <th>Status</th>
+
                     <th>Created</th>
 
                 </tr>
@@ -124,7 +126,7 @@
 
                 <tr th:if="${#lists.isEmpty(tickets)}">
 
-                    <td colspan="7"
+                    <td colspan="8"
                         class="text-center py-5">
 
                         <i class="bi bi-inbox display-5"></i>
@@ -173,6 +175,18 @@
                     </td>
 
                     <td th:text="${ticket.reason}"></td>
+
+                    <td>
+
+                        <span
+                                class="badge"
+                                th:classappend="${ticket.status.name() == 'OPEN'} ? ' bg-secondary' :
+                                                (${ticket.status.name() == 'IN_PROGRESS'} ? ' bg-warning text-dark' :
+                                                (${ticket.status.name() == 'RESOLVED'} ? ' bg-success' : ' bg-dark'))"
+                                th:text="${ticket.status}">
+                        </span>
+
+                    </td>
 
                     <td th:text="${ticket.createdAt}"></td>
 

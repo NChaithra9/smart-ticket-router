@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 
 import com.example.smart_ticket_router.client.ChromaClient;
 import com.example.smart_ticket_router.client.OpenAIClient;
+import com.example.smart_ticket_router.exception.EmbeddingException;
 
 /**
  * Service responsible for generating vector embeddings using OpenAI
@@ -76,12 +77,24 @@ public class EmbeddingService {
      * Retrieves all stored embeddings from the ChromaDB collection.
      *
      * @return the stored embeddings
+     * @throws EmbeddingException if ChromaDB cannot be reached or
+     *                            returns an error
      */
     public String getStoredEmbeddings() {
 
         logger.info("Retrieving stored embeddings from ChromaDB.");
 
-        return chromaClient.getDocuments(COLLECTION_ID);
+        try {
+
+            return chromaClient.getDocuments(COLLECTION_ID);
+
+        } catch (Exception ex) {
+
+            logger.error("Failed to retrieve stored embeddings from ChromaDB.", ex);
+
+            throw new EmbeddingException(
+                    "Failed to retrieve stored embeddings from ChromaDB", ex);
+        }
     }
 
     /**
@@ -91,6 +104,9 @@ public class EmbeddingService {
      * @param ticketId unique identifier of the ticket
      * @param ticketText support ticket content
      * @return response received from ChromaDB
+     * @throws EmbeddingException if ChromaDB cannot be reached or
+     *                            returns an error while storing the
+     *                            embedding
      */
     public String storeTicket(String ticketId, String ticketText) {
 
@@ -98,16 +114,26 @@ public class EmbeddingService {
 
         List<Float> embedding = generateEmbedding(ticketText);
 
-        String response = chromaClient.addEmbedding(
-                COLLECTION_ID,
-                ticketId,
-                ticketText,
-                embedding
-        );
+        try {
 
-        logger.info("Embedding stored successfully for ticket ID: {}", ticketId);
+            String response = chromaClient.addEmbedding(
+                    COLLECTION_ID,
+                    ticketId,
+                    ticketText,
+                    embedding
+            );
 
-        return response;
+            logger.info("Embedding stored successfully for ticket ID: {}", ticketId);
+
+            return response;
+
+        } catch (Exception ex) {
+
+            logger.error("Failed to store embedding for ticket ID: {}", ticketId, ex);
+
+            throw new EmbeddingException(
+                    "Failed to store embedding for ticket ID: " + ticketId, ex);
+        }
     }
 
     /**
@@ -116,6 +142,8 @@ public class EmbeddingService {
      *
      * @param text the input text
      * @return matching tickets returned by ChromaDB
+     * @throws EmbeddingException if ChromaDB cannot be reached or
+     *                            returns an error while searching
      */
     public String searchSimilarTickets(String text) {
 
@@ -123,6 +151,16 @@ public class EmbeddingService {
 
         List<Float> embedding = generateEmbedding(text);
 
-        return chromaClient.searchSimilar(embedding);
+        try {
+
+            return chromaClient.searchSimilar(embedding);
+
+        } catch (Exception ex) {
+
+            logger.error("Failed to search for similar tickets.", ex);
+
+            throw new EmbeddingException(
+                    "Failed to search for similar tickets in ChromaDB", ex);
+        }
     }
 }

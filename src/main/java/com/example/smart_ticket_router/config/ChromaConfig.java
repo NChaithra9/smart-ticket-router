@@ -39,6 +39,15 @@ public class ChromaConfig {
      *
      * <p>This method is executed automatically once during
      * application startup.
+     *
+     * <p>ChromaDB is treated as a best-effort, secondary store
+     * throughout the application (see
+     * {@code TicketRoutingService#routeTicket}, which already tolerates
+     * ChromaDB being unavailable at runtime). For consistency, a
+     * failure here is logged as a warning rather than being allowed to
+     * abort application startup, so the rest of the application
+     * (ticket routing, authentication, admin dashboard, etc.) remains
+     * usable even if ChromaDB is temporarily down.
      */
     @PostConstruct
     public void init() {
@@ -49,8 +58,11 @@ public class ChromaConfig {
             chromaService.initialize();
             logger.info("ChromaDB initialization completed successfully.");
         } catch (Exception e) {
-            logger.error("Failed to initialize ChromaDB.", e);
-            throw e;
+            logger.warn(
+                    "ChromaDB initialization failed. The application will continue "
+                    + "to start, but ChromaDB-backed features (embeddings, semantic "
+                    + "search) will be degraded until ChromaDB becomes available.",
+                    e);
         }
     }
 }

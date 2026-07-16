@@ -3,6 +3,7 @@ package com.example.smart_ticket_router.entity;
 import com.example.smart_ticket_router.enums.AssignedTeam;
 import com.example.smart_ticket_router.enums.Priority;
 import com.example.smart_ticket_router.enums.TicketCategory;
+import com.example.smart_ticket_router.enums.TicketStatus;
 import jakarta.persistence.*;
 
 import java.time.LocalDateTime;
@@ -62,6 +63,22 @@ public class Ticket {
     @ManyToOne
     @JoinColumn(name = "user_id")
     private User user;
+
+    /**
+     * Current workflow status of the ticket (open, in progress,
+     * resolved or closed).
+     *
+     * <p>
+     * A database-level default of {@code OPEN} is declared so that,
+     * when this column is first added to an existing {@code tickets}
+     * table by Hibernate ({@code spring.jpa.hibernate.ddl-auto=update}),
+     * pre-existing rows are backfilled with {@code OPEN} instead of
+     * being left {@code NULL}.
+     * </p>
+     */
+    @Enumerated(EnumType.STRING)
+    @Column(nullable = false, columnDefinition = "varchar(20) default 'OPEN'")
+    private TicketStatus status = TicketStatus.OPEN;
 
     /**
      * Timestamp indicating when the ticket was created.
@@ -145,5 +162,13 @@ public class Ticket {
 
     public void setUser(User user) {
         this.user = user;
+    }
+
+    public TicketStatus getStatus() {
+        return status;
+    }
+
+    public void setStatus(TicketStatus status) {
+        this.status = status;
     }
 }

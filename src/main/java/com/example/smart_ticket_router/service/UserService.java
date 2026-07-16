@@ -1,20 +1,27 @@
 package com.example.smart_ticket_router.service;
 
+import java.util.Set;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import com.example.smart_ticket_router.entity.Role;
 import com.example.smart_ticket_router.entity.User;
-import com.example.smart_ticket_router.enums.Role;
+import com.example.smart_ticket_router.exception.UserAlreadyExistsException;
+import com.example.smart_ticket_router.repository.RoleRepository;
 import com.example.smart_ticket_router.repository.UserRepository;
+import org.springframework.transaction.annotation.Transactional;
 
 /**
  * Service responsible for user registration and retrieval.
+ *
  * <p>
  * This service handles user-related business logic such as
  * registering new users, validating email uniqueness,
- * encrypting passwords, and retrieving users by email.
+ * encrypting passwords, assigning default roles,
+ * and retrieving users by email.
  * </p>
  */
 @Service
@@ -32,6 +39,11 @@ public class UserService {
     private final UserRepository userRepository;
 
     /**
+     * Repository for role persistence.
+     */
+    private final RoleRepository roleRepository;
+
+    /**
      * Password encoder used to encrypt user passwords.
      */
     private final PasswordEncoder passwordEncoder;
@@ -40,28 +52,42 @@ public class UserService {
      * Constructs a UserService.
      *
      * @param userRepository repository for user operations
+     * @param roleRepository repository for role operations
      * @param passwordEncoder password encoder for securing passwords
      */
     public UserService(UserRepository userRepository,
+                       RoleRepository roleRepository,
                        PasswordEncoder passwordEncoder) {
+
         this.userRepository = userRepository;
+        this.roleRepository = roleRepository;
         this.passwordEncoder = passwordEncoder;
     }
 
     /**
      * Registers a new user.
+     *
      * <p>
      * Validates that the email is unique, encrypts the user's
-     * password, assigns the default {@link Role#USER} role,
+     * password, assigns the default ROLE_USER role,
      * and persists the user.
      * </p>
      *
-     * @param name the user's name
-     * @param email the user's email address
-     * @param password the user's plain-text password
-     * @return the saved user
-     * @throws RuntimeException if the email already exists
+     * <p>
+     * The whole operation runs inside a single database transaction:
+     * if role assignment or the final save fails, the transaction is
+     * rolled back and no partial user record is left behind. See
+     * {@code TransactionLoggingAspect} for how the rollback is logged.
+     * </p>
+     *
+     * @param name user's name
+     * @param email user's email
+     * @param password user's password
+     * @return saved user
+     * @throws UserAlreadyExistsException if the email already exists
+     * @throws RuntimeException if ROLE_USER is missing
      */
+    @Transactional
     public User registerUser(String name,
                              String email,
                              String password) {
@@ -72,7 +98,7 @@ public class UserService {
 
             logger.warn("Registration failed. Email already exists: {}", email);
 
-            throw new RuntimeException("Email already exists");
+            throw new UserAlreadyExistsException("Email already exists: " + email);
         }
 
         User user = new User();
@@ -80,30 +106,41 @@ public class UserService {
         user.setName(name);
         user.setEmail(email);
 
-        logger.debug("Encrypting password for user.");
+        logger.debug("Encrypting password.");
 
-        // Encrypt password before saving
         user.setPassword(passwordEncoder.encode(password));
 
-        // Every newly registered user is assigned the USER role
-        user.setRole(Role.USER);
+        logger.info("Assigning default ROLE_USER.");
+
+        Role userRole = roleRepository.findByRoleName("ROLE_USER")
+                .orElseThrow(() -> {
+
+                    logger.error("ROLE_USER not found in database.");
+
+                    return new RuntimeException("Default role not found.");
+                });
+
+        user.setRoles(Set.of(userRole));
+
+        logger.debug("ROLE_USER assigned successfully.");
 
         User savedUser = userRepository.save(user);
 
-        logger.info("User registered successfully with ID: {}", savedUser.getId());
+        logger.info("User registered successfully with ID: {}",
+                savedUser.getId());
 
         return savedUser;
     }
 
     /**
-     * Retrieves a user by email address.
+     * Retrieves a user by email.
      *
-     * @param email the user's email
-     * @return the matching user, or {@code null} if not found
+     * @param email user email
+     * @return matching user or null
      */
     public User findByEmail(String email) {
 
-        logger.info("Searching for user with email: {}", email);
+        logger.info("Searching user by email: {}", email);
 
         return userRepository.findByEmail(email)
                 .orElse(null);

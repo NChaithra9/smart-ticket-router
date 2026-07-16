@@ -92,10 +92,14 @@
 
         </div>
 
-        <div class="col-md-4">
+        <div class="col-md-2">
 
             <form method="get"
                   th:action="@{/admin/tickets}">
+
+                <input type="hidden"
+                       name="status"
+                       th:value="${selectedStatus}">
 
                 <select
                         class="form-select"
@@ -111,6 +115,37 @@
                             th:value="${priority}"
                             th:text="${priority}"
                             th:selected="${priority == selectedPriority}">
+                    </option>
+
+                </select>
+
+            </form>
+
+        </div>
+
+        <div class="col-md-2">
+
+            <form method="get"
+                  th:action="@{/admin/tickets}">
+
+                <input type="hidden"
+                       name="priority"
+                       th:value="${selectedPriority}">
+
+                <select
+                        class="form-select"
+                        name="status"
+                        onchange="this.form.submit()">
+
+                    <option value="">
+                        All Statuses
+                    </option>
+
+                    <option
+                            th:each="status : ${statuses}"
+                            th:value="${status}"
+                            th:text="${status}"
+                            th:selected="${status == selectedStatus}">
                     </option>
 
                 </select>
@@ -149,6 +184,8 @@
 
                     <th>Assigned Team</th>
 
+                    <th>Status</th>
+
                     <th>Created</th>
 
                 </tr>
@@ -159,7 +196,7 @@
 
                 <tr th:if="${#lists.isEmpty(tickets)}">
 
-                    <td colspan="7"
+                    <td colspan="8"
                         class="text-center py-5">
 
                         <i class="bi bi-inbox display-5"></i>
@@ -215,6 +252,45 @@
                               th:text="${ticket.assignedTeam}">
 
                         </span>
+
+                    </td>
+
+                    <td>
+
+                        <span
+                                class="badge"
+                                th:classappend="${ticket.status.name() == 'OPEN'} ? ' bg-secondary' :
+                                                (${ticket.status.name() == 'IN_PROGRESS'} ? ' bg-warning text-dark' :
+                                                (${ticket.status.name() == 'RESOLVED'} ? ' bg-success' : ' bg-dark'))"
+                                th:text="${ticket.status}">
+                        </span>
+
+                        <form
+                                class="d-flex gap-1 mt-2"
+                                method="post"
+                                th:action="@{'/admin/tickets/' + ${ticket.id} + '/status'}">
+
+                            <select
+                                    class="form-select form-select-sm"
+                                    name="status">
+
+                                <option
+                                        th:each="status : ${statuses}"
+                                        th:value="${status}"
+                                        th:text="${status}"
+                                        th:selected="${status == ticket.status}">
+                                </option>
+
+                            </select>
+
+                            <button type="submit"
+                                    class="btn btn-sm btn-outline-primary">
+
+                                <i class="bi bi-check2"></i>
+
+                            </button>
+
+                        </form>
 
                     </td>
 

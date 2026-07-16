@@ -1,10 +1,9 @@
 package com.example.smart_ticket_router.controller;
 
-import com.example.smart_ticket_router.entity.Ticket;
 import com.example.smart_ticket_router.entity.User;
+import com.example.smart_ticket_router.exception.UserNotFoundException;
 import com.example.smart_ticket_router.model.TicketRequest;
 import com.example.smart_ticket_router.model.TicketResponse;
-import com.example.smart_ticket_router.repository.TicketRepository;
 import com.example.smart_ticket_router.repository.UserRepository;
 import com.example.smart_ticket_router.service.TicketRoutingService;
 
@@ -26,8 +25,9 @@ import org.springframework.web.bind.annotation.PostMapping;
  * <p>This controller provides endpoints to:
  * <ul>
  *     <li>Display the ticket submission form.</li>
- *     <li>Route support tickets using the AI routing service.</li>
- *     <li>Persist routed tickets for the authenticated user.</li>
+ *     <li>Route support tickets using the AI routing service, which
+ *     persists the ticket and links it to the authenticated user in a
+ *     single atomic operation.</li>
  * </ul>
  */
 @Controller
@@ -38,23 +38,20 @@ public class TicketWebController {
 
     private final TicketRoutingService ticketRoutingService;
     private final UserRepository userRepository;
-    private final TicketRepository ticketRepository;
 
     /**
      * Constructs a TicketWebController.
      *
-     * @param ticketRoutingService service responsible for routing tickets
+     * @param ticketRoutingService service responsible for routing,
+     *                             persisting and associating tickets
      * @param userRepository repository used to retrieve user information
-     * @param ticketRepository repository used to persist tickets
      */
     public TicketWebController(
             TicketRoutingService ticketRoutingService,
-            UserRepository userRepository,
-            TicketRepository ticketRepository) {
+            UserRepository userRepository) {
 
         this.ticketRoutingService = ticketRoutingService;
         this.userRepository = userRepository;
-        this.ticketRepository = ticketRepository;
     }
 
     /**
@@ -75,12 +72,20 @@ public class TicketWebController {
 
     /**
      * Routes a submitted support ticket, associates it with the
-     * authenticated user, stores it in the database, and displays
-     * the routing result.
+     * authenticated user, persists it, and displays the routing result.
+     *
+     * <p>
+     * The authenticated user is resolved first, then
+     * {@link TicketRoutingService#routeTicket(String, User)} is called
+     * once to classify and save the ticket already linked to that user,
+     * so exactly one ticket row is created per submission.
+     * </p>
      *
      * @param ticketRequest support ticket submitted by the user
      * @param model Spring MVC model used to pass data to the view
      * @return the home page displaying the routing result
+     * @throws UserNotFoundException if the authenticated user cannot be
+     *                               found in the database
      */
     @PostMapping("/route")
     public String routeTicket(
@@ -88,11 +93,6 @@ public class TicketWebController {
             Model model) {
 
         logger.info("Received support ticket for routing.");
-
-        TicketResponse response =
-                ticketRoutingService.routeTicket(ticketRequest.getMessage());
-
-        logger.info("Ticket routed successfully.");
 
         Authentication authentication =
                 SecurityContextHolder.getContext().getAuthentication();
@@ -102,21 +102,21 @@ public class TicketWebController {
         String email = authentication.getName();
 
         User user = userRepository.findByEmail(email)
-                .orElseThrow(() ->
-                        new IllegalArgumentException("Authenticated user not found."));
+                .orElseThrow(() -> {
 
-        Ticket ticket = new Ticket();
+                    logger.error(
+                            "Authenticated user '{}' not found in database.",
+                            email);
 
-        ticket.setMessage(ticketRequest.getMessage());
-        ticket.setCategory(response.getCategory());
-        ticket.setPriority(response.getPriority());
-        ticket.setAssignedTeam(response.getAssignedTeam());
-        ticket.setReason(response.getReason());
-        ticket.setUser(user);
+                    return new UserNotFoundException(
+                            "Authenticated user not found: " + email);
+                });
 
-        ticketRepository.save(ticket);
+        TicketResponse response =
+                ticketRoutingService.routeTicket(
+                        ticketRequest.getMessage(), user);
 
-        logger.info("Ticket saved successfully for user: {}", email);
+        logger.info("Ticket routed and saved successfully for user: {}", email);
 
         model.addAttribute("ticketRequest", ticketRequest);
         model.addAttribute("response", response);

@@ -15,4 +15,14 @@ public class OpenAIException extends RuntimeException {
         super(message);
     }
 
+    /**
+     * Constructs the exception with an underlying cause.
+     *
+     * @param message exception message
+     * @param cause the original exception that triggered this failure
+     */
+    public OpenAIException(String message, Throwable cause) {
+        super(message, cause);
+    }
+
 }

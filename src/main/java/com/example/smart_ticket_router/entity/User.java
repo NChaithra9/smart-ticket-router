@@ -1,20 +1,25 @@
 package com.example.smart_ticket_router.entity;
 
-import com.example.smart_ticket_router.enums.Role;
 import jakarta.persistence.*;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 /**
  * Entity representing an application user.
  *
- * <p>A user can authenticate into the application and submit
- * support tickets. Each user is assigned a role that determines
- * the level of access within the application.
+ * <p>
+ * A user can authenticate into the application and submit
+ * support tickets. Each user can be assigned one or more roles,
+ * and each role determines the permissions available to the user.
+ * </p>
  *
- * <p>A user can have multiple support tickets, represented by
+ * <p>
+ * A user can also have multiple support tickets represented by
  * a one-to-many relationship with the {@link Ticket} entity.
+ * </p>
  */
 @Entity
 @Table(name = "users")
@@ -35,23 +40,31 @@ public class User {
 
     /**
      * Email address used for authentication.
-     * Must be unique.
      */
     @Column(nullable = false, unique = true)
     private String email;
 
     /**
-     * Encrypted password of the user.
+     * Encrypted password.
      */
     @Column(nullable = false)
     private String password;
 
     /**
-     * Role assigned to the user.
+     * Roles assigned to the user.
+     *
+     * <p>
+     * A user may possess multiple roles,
+     * and each role grants one or more permissions.
+     * </p>
      */
-    @Enumerated(EnumType.STRING)
-    @Column(nullable = false)
-    private Role role;
+    @ManyToMany(fetch = FetchType.EAGER)
+    @JoinTable(
+            name = "user_roles",
+            joinColumns = @JoinColumn(name = "user_id"),
+            inverseJoinColumns = @JoinColumn(name = "role_id")
+    )
+    private Set<Role> roles = new HashSet<>();
 
     /**
      * Support tickets submitted by the user.
@@ -65,30 +78,65 @@ public class User {
     public User() {
     }
 
+    /**
+     * Returns the user ID.
+     *
+     * @return user ID
+     */
     public Long getId() {
         return id;
     }
 
+    /**
+     * Sets the user ID.
+     *
+     * @param id user ID
+     */
     public void setId(Long id) {
         this.id = id;
     }
 
+    /**
+     * Returns the user's full name.
+     *
+     * @return user name
+     */
     public String getName() {
         return name;
     }
 
+    /**
+     * Sets the user's full name.
+     *
+     * @param name user name
+     */
     public void setName(String name) {
         this.name = name;
     }
 
+    /**
+     * Returns the user's email address.
+     *
+     * @return email address
+     */
     public String getEmail() {
         return email;
     }
 
+    /**
+     * Sets the user's email address.
+     *
+     * @param email email address
+     */
     public void setEmail(String email) {
         this.email = email;
     }
 
+    /**
+     * Returns the encrypted password.
+     *
+     * @return encrypted password
+     */
     public String getPassword() {
         return password;
     }
@@ -102,18 +150,38 @@ public class User {
         this.password = password;
     }
 
-    public Role getRole() {
-        return role;
+    /**
+     * Returns all roles assigned to the user.
+     *
+     * @return assigned roles
+     */
+    public Set<Role> getRoles() {
+        return roles;
     }
 
-    public void setRole(Role role) {
-        this.role = role;
+    /**
+     * Assigns roles to the user.
+     *
+     * @param roles application roles
+     */
+    public void setRoles(Set<Role> roles) {
+        this.roles = roles;
     }
 
+    /**
+     * Returns all tickets submitted by the user.
+     *
+     * @return support tickets
+     */
     public List<Ticket> getTickets() {
         return tickets;
     }
 
+    /**
+     * Sets the tickets submitted by the user.
+     *
+     * @param tickets support tickets
+     */
     public void setTickets(List<Ticket> tickets) {
         this.tickets = tickets;
     }
