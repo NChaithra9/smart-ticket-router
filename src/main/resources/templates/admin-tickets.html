@@ -41,7 +41,7 @@
 
 <body>
 
-<div th:replace="fragments/navbar :: navbar"></div>
+<div th:replace="~{fragments/navbar :: navbar}"></div>
 
 <div class="container py-5">
 
@@ -76,17 +76,52 @@
 
     </div>
 
-    <!-- Search -->
+    <!-- Search + Priority Filter -->
 
-    <div class="card p-3 mb-4">
+<div class="card p-3 mb-4">
 
-        <input
-                id="searchBox"
-                class="form-control"
-                type="text"
-                placeholder="Search tickets...">
+    <div class="row g-3">
+
+        <div class="col-md-8">
+
+            <input
+                    id="searchBox"
+                    class="form-control"
+                    type="text"
+                    placeholder="Search tickets...">
+
+        </div>
+
+        <div class="col-md-4">
+
+            <form method="get"
+                  th:action="@{/admin/tickets}">
+
+                <select
+                        class="form-select"
+                        name="priority"
+                        onchange="this.form.submit()">
+
+                    <option value="">
+                        All Priorities
+                    </option>
+
+                    <option
+                            th:each="priority : ${priorities}"
+                            th:value="${priority}"
+                            th:text="${priority}"
+                            th:selected="${priority == selectedPriority}">
+                    </option>
+
+                </select>
+
+            </form>
+
+        </div>
 
     </div>
+
+</div>
 
     <!-- Table -->
 
@@ -197,7 +232,7 @@
 
 </div>
 
-<div th:replace="fragments/footer :: footer"></div>
+<div th:replace="~{fragments/footer :: footer}"></div>
 
 <script>
 

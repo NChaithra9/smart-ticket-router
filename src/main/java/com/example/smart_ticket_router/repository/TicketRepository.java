@@ -6,6 +6,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 import com.example.smart_ticket_router.entity.Ticket;
 import com.example.smart_ticket_router.entity.User;
+import com.example.smart_ticket_router.enums.Priority;
 
 /**
  * Repository interface for performing CRUD operations
@@ -13,8 +14,8 @@ import com.example.smart_ticket_router.entity.User;
  * <p>
  * Extends {@link JpaRepository} to provide standard
  * database operations and defines additional query
- * methods for retrieving tickets based on user and
- * creation date.
+ * methods for retrieving tickets based on user,
+ * priority, and creation date.
  * </p>
  */
 public interface TicketRepository extends JpaRepository<Ticket, Long> {
@@ -43,4 +44,22 @@ public interface TicketRepository extends JpaRepository<Ticket, Long> {
      * @return a list of the user's tickets sorted from newest to oldest
      */
     List<Ticket> findByUserOrderByCreatedAtDesc(User user);
+
+    /**
+     * Retrieves all tickets with the specified priority.
+     *
+     * @param priority the priority level to filter by
+     * @return a list of tickets matching the given priority
+     */
+    List<Ticket> findByPriority(Priority priority);
+
+    /**
+     * Retrieves all tickets with the specified priority,
+     * ordered by creation date in descending order.
+     *
+     * @param priority the priority level to filter by
+     * @return a list of tickets matching the given priority,
+     *         sorted from newest to oldest
+     */
+    List<Ticket> findByPriorityOrderByCreatedAtDesc(Priority priority);
 }
