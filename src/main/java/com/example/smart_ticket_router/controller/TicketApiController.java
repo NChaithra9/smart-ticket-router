@@ -12,6 +12,8 @@ import org.slf4j.LoggerFactory;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
+import jakarta.validation.Valid;
+
 /**
  * REST controller responsible for routing and retrieving support tickets.
  *
@@ -49,10 +51,12 @@ public class TicketApiController {
      *
      * @param request request containing the ticket message
      * @return AI-generated ticket classification
+     * @throws org.springframework.web.bind.MethodArgumentNotValidException
+     *         if the ticket message is blank
      */
     @PreAuthorize("hasAuthority('CREATE_TICKET')")
     @PostMapping("/route")
-    public TicketResponse routeTicket(@RequestBody TicketRequest request) {
+    public TicketResponse routeTicket(@Valid @RequestBody TicketRequest request) {
 
         logger.info("Received API request to route a support ticket.");
 

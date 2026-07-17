@@ -3,6 +3,9 @@ package com.example.smart_ticket_router.service;
 import com.example.smart_ticket_router.client.OpenAIClient;
 import com.example.smart_ticket_router.entity.Ticket;
 import com.example.smart_ticket_router.entity.User;
+import com.example.smart_ticket_router.enums.AssignedTeam;
+import com.example.smart_ticket_router.enums.Priority;
+import com.example.smart_ticket_router.enums.TicketCategory;
 import com.example.smart_ticket_router.exception.OpenAIException;
 import com.example.smart_ticket_router.model.TicketResponse;
 import com.example.smart_ticket_router.prompt.PromptBuilder;
@@ -25,6 +28,21 @@ import java.time.LocalDateTime;
  * together the {@link OpenAIClient} (AI classification), the
  * {@link TicketRepository} (relational persistence) and the
  * {@link EmbeddingService} (vector storage used for semantic search).
+ * </p>
+ *
+ * <p>
+ * <b>Handling AI unreliability:</b> a large language model will
+ * occasionally return text that is not valid JSON, or JSON that uses a
+ * value outside the fixed set of categories/priorities/teams this
+ * application understands. {@link #classifyTicket(String)} treats this
+ * as an expected failure mode rather than a bug: it retries the OpenAI
+ * call exactly once, and if the second response also fails to parse, it
+ * falls back to a safe default classification ({@code GENERAL_SUPPORT} /
+ * {@code MEDIUM} / {@code CUSTOMER_SUPPORT}) so the ticket is still
+ * routed and saved for manual follow-up instead of the request failing
+ * outright. A genuine failure to reach OpenAI at all (bad API key,
+ * network outage) is treated differently and is not silently swallowed;
+ * it is surfaced as an {@link OpenAIException}.
  * </p>
  *
  * <p>
@@ -125,8 +143,7 @@ public class TicketRoutingService {
      * @param user    the authenticated user submitting the ticket,
      *                or {@code null} for anonymous/system submissions
      * @return the AI-generated classification of the ticket
-     * @throws OpenAIException if OpenAI cannot be reached or its
-     *                         response cannot be parsed
+     * @throws OpenAIException if OpenAI cannot be reached at all
      * @throws RuntimeException if any other unexpected error occurs
      *                          while routing the ticket
      */
@@ -137,28 +154,7 @@ public class TicketRoutingService {
 
             logger.info("Received ticket for routing.");
 
-            // Build prompt
-            String prompt = PromptBuilder.buildPrompt(message);
-
-            logger.debug("Prompt built successfully.");
-
-            // Ask OpenAI
-            logger.info("Sending request to OpenAI...");
-            String json = openAIClient.askOpenAI(prompt);
-
-            // Remove markdown if GPT returns ```json ... ```
-            json = json.replace("```json", "")
-                       .replace("```", "")
-                       .trim();
-
-            logger.info("Received response from OpenAI.");
-            logger.debug("OpenAI JSON Response: {}", json);
-
-            // Convert JSON to Java object
-            TicketResponse response =
-                    mapper.readValue(json, TicketResponse.class);
-
-            logger.info("Successfully parsed OpenAI response.");
+            TicketResponse response = classifyTicket(message);
 
             // Create Ticket entity
             Ticket ticket = new Ticket();
@@ -226,5 +222,116 @@ public class TicketRoutingService {
 
             throw new RuntimeException("Error while routing ticket", e);
         }
+    }
+
+    /**
+     * Classifies a ticket message using OpenAI, tolerating the model
+     * occasionally returning text that is not valid, parseable JSON.
+     *
+     * <p>
+     * The first response is parsed with {@link #parseClassification}. If
+     * that fails, the exact same prompt is sent to OpenAI a second time
+     * (a fresh sample from the model can often succeed where the first
+     * one didn't). If the retry also fails to parse, a safe default
+     * classification is returned via {@link #buildFallbackClassification()}
+     * rather than propagating the parse failure.
+     * </p>
+     *
+     * @param message the raw ticket message to classify
+     * @return the AI-generated classification, or a fallback
+     *         classification if OpenAI's response could not be parsed
+     *         twice in a row
+     * @throws OpenAIException if OpenAI itself cannot be reached (this
+     *                         is not retried here; it is treated as a
+     *                         hard failure by the caller)
+     */
+    private TicketResponse classifyTicket(String message) {
+
+        String prompt = PromptBuilder.buildPrompt(message);
+
+        logger.debug("Prompt built successfully.");
+
+        logger.info("Sending request to OpenAI...");
+        String json = openAIClient.askOpenAI(prompt);
+
+        try {
+
+            return parseClassification(json);
+
+        } catch (Exception firstAttemptEx) {
+
+            logger.warn("OpenAI returned a response that could not be parsed as "
+                    + "valid ticket JSON. Retrying once before falling back to a "
+                    + "default classification.", firstAttemptEx);
+
+            try {
+
+                String retryJson = openAIClient.askOpenAI(prompt);
+
+                return parseClassification(retryJson);
+
+            } catch (Exception secondAttemptEx) {
+
+                logger.error("OpenAI response could not be parsed as valid ticket "
+                        + "JSON even after a retry. Falling back to a default "
+                        + "classification so the ticket is still routed instead "
+                        + "of failing outright.", secondAttemptEx);
+
+                return buildFallbackClassification();
+            }
+        }
+    }
+
+    /**
+     * Parses a raw OpenAI response into a {@link TicketResponse},
+     * stripping any markdown code fences the model may have wrapped the
+     * JSON in.
+     *
+     * @param json the raw response text returned by OpenAI
+     * @return the parsed classification
+     * @throws Exception if the response is not valid, parseable JSON, or
+     *                    uses a value outside the categories/priorities/
+     *                    teams this application understands
+     */
+    private TicketResponse parseClassification(String json) throws Exception {
+
+        String cleaned = json.replace("```json", "")
+                .replace("```", "")
+                .trim();
+
+        logger.info("Received response from OpenAI.");
+        logger.debug("OpenAI JSON Response: {}", cleaned);
+
+        TicketResponse response = mapper.readValue(cleaned, TicketResponse.class);
+
+        logger.info("Successfully parsed OpenAI response.");
+
+        return response;
+    }
+
+    /**
+     * Builds a safe default classification used when OpenAI's response
+     * could not be parsed even after a retry.
+     *
+     * <p>
+     * Routing to general support at medium priority ensures a human
+     * still reviews the ticket, rather than the submission failing with
+     * an error the end user cannot act on.
+     * </p>
+     *
+     * @return a fallback ticket classification
+     */
+    private TicketResponse buildFallbackClassification() {
+
+        TicketResponse fallback = new TicketResponse();
+
+        fallback.setCategory(TicketCategory.GENERAL_SUPPORT);
+        fallback.setPriority(Priority.MEDIUM);
+        fallback.setAssignedTeam(AssignedTeam.CUSTOMER_SUPPORT);
+        fallback.setReason(
+                "Automatic classification failed after a retry; routed to "
+                + "general support for manual review.");
+
+        return fallback;
     }
 }

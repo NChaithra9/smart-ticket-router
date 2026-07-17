@@ -96,12 +96,19 @@
 
                         <textarea
                                 class="form-control"
+                                th:classappend="${#fields.hasErrors('message')} ? 'is-invalid' : ''"
                                 rows="8"
                                 th:field="*{message}"
                                 placeholder="Example: I forgot my password after enabling two-factor authentication..."
                                 required>
 
                         </textarea>
+
+                        <div class="invalid-feedback"
+                             th:if="${#fields.hasErrors('message')}"
+                             th:errors="*{message}">
+
+                        </div>
 
                     </div>
 

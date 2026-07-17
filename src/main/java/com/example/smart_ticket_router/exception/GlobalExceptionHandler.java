@@ -7,10 +7,12 @@ import org.slf4j.LoggerFactory;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 
 import java.time.LocalDateTime;
+import java.util.stream.Collectors;
 
 /**
  * Global exception handler for the Smart Ticket Router application.
@@ -85,6 +87,91 @@ public class GlobalExceptionHandler {
         );
 
         return new ResponseEntity<>(response, HttpStatus.NOT_FOUND);
+    }
+
+    /**
+     * Handles Bean Validation failures (for example, a blank ticket
+     * message rejected by {@code @Valid}).
+     *
+     * @param ex the validation exception
+     * @param request current HTTP request
+     * @return standardized error response listing each invalid field
+     */
+    @ExceptionHandler(MethodArgumentNotValidException.class)
+    public ResponseEntity<ErrorResponse> handleValidationException(
+            MethodArgumentNotValidException ex,
+            HttpServletRequest request) {
+
+        logger.warn("Validation failed for request.", ex);
+
+        String message = ex.getBindingResult().getFieldErrors().stream()
+                .map(fieldError -> fieldError.getField() + ": "
+                        + fieldError.getDefaultMessage())
+                .collect(Collectors.joining("; "));
+
+        ErrorResponse response = new ErrorResponse(
+                LocalDateTime.now(),
+                HttpStatus.BAD_REQUEST.value(),
+                HttpStatus.BAD_REQUEST.getReasonPhrase(),
+                message,
+                request.getRequestURI()
+        );
+
+        return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
+    }
+
+    /**
+     * Handles failures communicating with the OpenAI API.
+     *
+     * @param ex the OpenAI exception
+     * @param request current HTTP request
+     * @return standardized error response with a 502 status, since the
+     *         failure originates from an upstream service rather than
+     *         this application
+     */
+    @ExceptionHandler(OpenAIException.class)
+    public ResponseEntity<ErrorResponse> handleOpenAIException(
+            OpenAIException ex,
+            HttpServletRequest request) {
+
+        logger.error("OpenAI service error.", ex);
+
+        ErrorResponse response = new ErrorResponse(
+                LocalDateTime.now(),
+                HttpStatus.BAD_GATEWAY.value(),
+                HttpStatus.BAD_GATEWAY.getReasonPhrase(),
+                ex.getMessage(),
+                request.getRequestURI()
+        );
+
+        return new ResponseEntity<>(response, HttpStatus.BAD_GATEWAY);
+    }
+
+    /**
+     * Handles failures communicating with ChromaDB.
+     *
+     * @param ex the embedding exception
+     * @param request current HTTP request
+     * @return standardized error response with a 502 status, since the
+     *         failure originates from an upstream service rather than
+     *         this application
+     */
+    @ExceptionHandler(EmbeddingException.class)
+    public ResponseEntity<ErrorResponse> handleEmbeddingException(
+            EmbeddingException ex,
+            HttpServletRequest request) {
+
+        logger.error("ChromaDB/embedding service error.", ex);
+
+        ErrorResponse response = new ErrorResponse(
+                LocalDateTime.now(),
+                HttpStatus.BAD_GATEWAY.value(),
+                HttpStatus.BAD_GATEWAY.getReasonPhrase(),
+                ex.getMessage(),
+                request.getRequestURI()
+        );
+
+        return new ResponseEntity<>(response, HttpStatus.BAD_GATEWAY);
     }
 
     /**

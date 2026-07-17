@@ -14,9 +14,12 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
+
+import jakarta.validation.Valid;
 
 /**
  * Controller responsible for handling the web interface for
@@ -82,17 +85,29 @@ public class TicketWebController {
      * </p>
      *
      * @param ticketRequest support ticket submitted by the user
+     * @param bindingResult validation result for {@code ticketRequest}
      * @param model Spring MVC model used to pass data to the view
-     * @return the home page displaying the routing result
+     * @return the home page displaying the routing result, or
+     *         re-displaying the form with a validation error if the
+     *         submitted message was blank
      * @throws UserNotFoundException if the authenticated user cannot be
      *                               found in the database
      */
     @PostMapping("/route")
     public String routeTicket(
-            @ModelAttribute TicketRequest ticketRequest,
+            @Valid @ModelAttribute TicketRequest ticketRequest,
+            BindingResult bindingResult,
             Model model) {
 
         logger.info("Received support ticket for routing.");
+
+        if (bindingResult.hasErrors()) {
+
+            logger.warn("Ticket submission rejected due to validation errors: {}",
+                    bindingResult.getAllErrors());
+
+            return "index";
+        }
 
         Authentication authentication =
                 SecurityContextHolder.getContext().getAuthentication();
